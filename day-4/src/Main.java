@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,9 +20,7 @@ public class Main {
             int[] sectionsRange1 = pair.get(0);
             int[] sectionsRange2 = pair.get(1);
 
-            // If the assigned range of sections for elf #1 in this pair is contained within the assigned range of
-            // sections of elf #2 in this pair, or vice versa, then an overlap is found.
-            if ((sectionsRange1[0] >= sectionsRange2[0] && sectionsRange1[1] <= sectionsRange2[1]) || (sectionsRange2[0] >= sectionsRange1[0] && sectionsRange2[1] <= sectionsRange1[1])) {
+            if (areAssignedRegionsOverlapping(sectionsRange1[0], sectionsRange1[1], sectionsRange2[0], sectionsRange2[1])) {
                 numberOfOverlappingAssignedSectionRanges++;
             }
         }
@@ -49,5 +49,21 @@ public class Main {
             assignedSections.add(pair);
         }
         return assignedSections;
+    }
+
+    // If the assigned range of sections for elf #1 in this pair is contained within the assigned range of
+    // sections of elf #2 in this pair, or vice versa, then an overlap is found.
+    private static boolean areAssignedRegionsOverlapping(int startRegion1, int endRegion1, int startRegion2, int endRegion2) {
+        List<Integer> range1 = replicateRange(startRegion1, endRegion1);
+        List<Integer> range2 = replicateRange(startRegion2, endRegion2);
+
+        return range1.stream().anyMatch(range2::contains) || range2.stream().anyMatch(range1::contains);
+    }
+
+    private static List<Integer> replicateRange(int start, int end) {
+        return IntStream
+            .rangeClosed(start, end)
+            .boxed()
+            .collect(Collectors.toList());
     }
 }
