@@ -16,13 +16,15 @@ public class Main {
         parseFileLines(Objects.requireNonNull(SimpleFileReader.readFile(file)));
 
         cargoInstructions.forEach(instruction -> {
+            List<String> startPile = cargoStorage.get(instruction.startPile() - 1);
+            List<String> destinationPile = cargoStorage.get(instruction.destinationPile() - 1);
+            
+            int destinationPileSize = destinationPile.size();
+            
             for (int i = 0; i < instruction.numberOfCrates(); i++ ) {
-                List<String> startPile = cargoStorage.get(instruction.startPile() - 1);
-                List<String> destinationPile = cargoStorage.get(instruction.destinationPile() - 1);
-
                 String crate = startPile.remove(startPile.size() - 1);
 
-                destinationPile.add(crate);
+                destinationPile.add(destinationPileSize, crate);
             }
         });
 
