@@ -9,9 +9,7 @@ import java.util.List;
 
 public class SimpleFileReader {
     public static List<String> readFile(File file) {
-        try {
-            BufferedReader fileReader = new BufferedReader(new FileReader(file));
-
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
             List<String> lines = new ArrayList<>();
 
             String line = fileReader.readLine();
