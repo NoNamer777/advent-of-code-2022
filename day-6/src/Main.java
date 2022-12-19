@@ -16,9 +16,9 @@ public class Main {
         String streamWindow;
         int i;
 
-        for (i = 4; i < stream.length(); i++) {
+        for (i = 14; i < stream.length(); i++) {
             // Go through the data stream inspecting 4 characters at a time.
-            streamWindow = stream.substring(i - 4, i);
+            streamWindow = stream.substring(i - 14, i);
             
             boolean duplicatesFound = false;
 
@@ -28,8 +28,9 @@ public class Main {
                 if (duplicatesFound) break;
                 
                 // Check how many characters are replaced. If only 1 character is replaced, this means
-                // That there was only 1 of such character in the streamWindow, meaning that we found the start-of-packet marker.
-                duplicatesFound = processStreamWindow.length() <= 2;
+                // That there was only 1 of such character in the streamWindow, meaning that we found the
+                // start-of-packet/start-of-message marker.
+                duplicatesFound = processStreamWindow.length() <= 12;
             }
             if (!duplicatesFound) break;
         }
